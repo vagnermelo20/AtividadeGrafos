@@ -4,16 +4,16 @@ import streamlit as st
 from src.data_loader import load_data
 
 st.set_page_config(
-    page_title="Avaliação de Correlação entre Variáveis Quantitativas do Heart Disease Dataset",
+    page_title="Avaliação de Correlação entre Variáveis Quantitativas do Titanic Dataset",
     layout="wide",
 )
 
-st.title("Avaliação de Correlação entre Variáveis Quantitativas do Heart Disease Dataset")
+st.title("Avaliação de Correlação entre Variáveis Quantitativas do Titanic Dataset")
 
 df = load_data()
 
 # Variáveis quantitativas do estudo (mesma lista VARS_QUANT do notebook de EDA)
-VARS_QUANT = ["age", "trestbps", "chol", "thalach", "oldpeak"]
+VARS_QUANT = ["age", "fare", "sibsp", "parch"]
 
 # Sidebar: filtros (variáveis + intervalo)
 with st.sidebar:
@@ -29,7 +29,7 @@ with st.sidebar:
     separar_por_classe = st.toggle(
         "Distinguir por Classe",
         value=False,
-        help="Colore a distribuição pela classe (doenca_cardiaca: Normal ou Cardíaco).",
+        help="Colore a distribuição pela classe (sobreviveu: Sobreviveu ou Não Sobreviveu).",
     )
 
     # Um slider de intervalo para cada variável selecionada
@@ -48,12 +48,12 @@ with st.sidebar:
             key=f"intervalo_{var}",
         )
 
-# Mantém só os pacientes dentro de todos os intervalos escolhidos
+# Mantém só os passageiros dentro de todos os intervalos escolhidos
 df_filtrado = df
 for var, (inicio, fim) in intervalos.items():
     df_filtrado = df_filtrado[df_filtrado[var].between(inicio, fim)]
 
-st.caption(f"{len(df_filtrado)} de {len(df)} pacientes dentro dos intervalos escolhidos.")
+st.caption(f"{len(df_filtrado)} de {len(df)} passageiros dentro dos intervalos escolhidos.")
 
 # Dashboard 1: correlação (heatmap) à esquerda, distribuição (histograma) à direita
 col_correlacao, col_distribuicao = st.columns([1, 1.5])
@@ -73,6 +73,6 @@ with col_distribuicao:
 
     # TODO: st.selectbox para escolher a variável do histograma
     # TODO: histograma (plotly px.histogram) e exibir com st.plotly_chart
-    #       se separar_por_classe: color="doenca_cardiaca"
+    #       se separar_por_classe: color="sobreviveu"
 
 # TODO: Dashboard 2 — KPIs (Aula 22)
