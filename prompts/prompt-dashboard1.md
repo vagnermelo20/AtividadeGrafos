@@ -6,7 +6,7 @@ Disciplina de Análise e Visualização de Dados (Cesar School). Dataset Titanic
 
 ## Entrada
 
-Rascunho em `prompts/rascunho_dashboard1.png`: sidebar com filtros (variáveis + intervalo); área principal com Correlação (heatmap) à esquerda e Distribuição (histograma) à direita.
+Rascunho em `entregas/rascunho-dashboard1.png`: sidebar com filtros (variáveis + intervalo); área principal com Correlação (heatmap) à esquerda e Distribuição (histograma) à direita.
 
 Variáveis quantitativas: `age`, `fare`, `sibsp`, `parch`. Classe: `sobreviveu`.
 
