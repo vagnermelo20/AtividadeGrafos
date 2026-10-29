@@ -1,7 +1,7 @@
 # Declaração de Uso de IA
 
 **Nome:** Vagner Montenegro
-**Data:** 22/10/2026 (Aula 21) e 27/10/2026 (Aula 22)
+**Data:** 22/10/2026 (Aula 21), 27/10/2026 (Aula 22) e 29/10/2026 (Aula 23)
 
 ## Ferramenta
 
@@ -30,3 +30,15 @@ O prompt completo está em [prompt-dashboard2.md](prompt-dashboard2.md).
 - **Aceito:** heatmap de Spearman e histogramas em Altair no Dashboard 1, abas para os dois dashboards, 4 KPIs com `st.metric` e gráfico de barras da taxa de sobrevivência por grupo com clique (`on_select`) atualizando os KPIs.
 - **Modificado:** cores trocadas para uma paleta "oceano" (azul) ligada ao tema do Titanic, aplicada também ao `.streamlit/config.toml`; tarifa mostrada pela mediana em vez da média, porque `fare` é muito assimétrica.
 - **Rejeitado:** mais de 4 KPIs, para não passar do limite de 3 a 5 indicado na aula.
+
+## Aula 23
+
+### Prompt usado
+
+O prompt completo está em [prompt-aula23.md](prompt-aula23.md).
+
+### O que foi aceito, modificado ou rejeitado e por quê
+
+- **Aceito:** dois visuais novos no Dashboard 2 (taxa de sobrevivência por faixa etária e boxplot da tarifa por desfecho), ligados ao clique no gráfico de barras, e a conferência do checklist antes do deploy.
+- **Modificado:** a idade foi discretizada em faixas (0–11, 12–17, 18–39, 40–59, 60+) para simplificar a leitura, e a tarifa usa escala symlog porque `fare` é muito assimétrica.
+- **Rejeitado:** autenticação (`st.login`), porque o app é público e não tem dados sensíveis.

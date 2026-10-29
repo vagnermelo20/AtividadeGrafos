@@ -2,7 +2,7 @@
 
 Dataset: Titanic (782 passageiros após o tratamento da EDA). Os cálculos foram testados antes em [notebooks/metricas-dashboard2.ipynb](../notebooks/metricas-dashboard2.ipynb).
 
-**Widgets que controlam o dashboard:** os filtros de intervalo da sidebar (os mesmos do Dashboard 1), o seletor "Agrupar por" (sexo, classe da passagem ou porto de embarque) e o clique em uma barra do gráfico, que recalcula as métricas só para o grupo escolhido.
+**Widgets que controlam o dashboard:** os filtros de intervalo da sidebar (os mesmos do Dashboard 1), o seletor "Agrupar por" (sexo, classe da passagem ou porto de embarque) e o clique em uma barra do gráfico, que recalcula as métricas e os outros dois visuais (taxa de sobrevivência por faixa etária e tarifa por desfecho) só para o grupo escolhido.
 
 ## Métrica 1: Passageiros
 - **Variável:** contagem de linhas do dataset filtrado

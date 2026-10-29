@@ -250,3 +250,61 @@ with aba_dashboard2:
             )
             kpi3.metric("Idade média", "—" if pd.isna(idade_media) else f"{idade_media:.1f} anos")
             kpi4.metric("Tarifa mediana", f"£ {selecionado['fare'].median():.2f}")
+
+        # Os dois visuais de baixo também seguem o grupo clicado (partem de `selecionado`)
+        col_faixa, col_tarifa = st.columns(2)
+
+        with col_faixa:
+            st.subheader("Taxa de sobrevivência por faixa etária")
+
+            # Discretização de `age` em faixas (passageiros sem idade registrada ficam de fora)
+            por_faixa = (
+                selecionado.assign(
+                    faixa_etaria=pd.cut(
+                        selecionado["age"],
+                        bins=[0, 12, 18, 40, 60, 81],
+                        right=False,
+                        labels=["0–11", "12–17", "18–39", "40–59", "60+"],
+                    ),
+                    sobreviveu_num=selecionado["sobreviveu"].eq("Sobreviveu"),
+                )
+                .dropna(subset=["faixa_etaria"])
+                .groupby("faixa_etaria", observed=True)
+                .agg(passageiros=("sobreviveu_num", "size"), taxa=("sobreviveu_num", "mean"))
+                .reset_index()
+            )
+
+            if por_faixa.empty:
+                st.warning("Nenhum passageiro com idade registrada no grupo escolhido.")
+            else:
+                faixas = (
+                    alt.Chart(por_faixa)
+                    .mark_bar(color=COR_SOBREVIVEU)
+                    .encode(
+                        x=alt.X("faixa_etaria:N", title="Faixa etária (anos)", sort=None, axis=alt.Axis(labelAngle=0)),
+                        y=alt.Y("taxa:Q", title="Taxa de sobrevivência", axis=alt.Axis(format="%"), scale=alt.Scale(domain=[0, 1])),
+                        tooltip=[
+                            alt.Tooltip("faixa_etaria:N", title="Faixa etária"),
+                            alt.Tooltip("passageiros:Q", title="Passageiros"),
+                            alt.Tooltip("taxa:Q", title="Taxa de sobrevivência", format=".1%"),
+                        ],
+                    )
+                    .properties(height=300)
+                )
+                st.altair_chart(faixas, width="stretch", alt="Barras da taxa de sobrevivência por faixa etária")
+
+        with col_tarifa:
+            st.subheader("Tarifa paga por desfecho")
+
+            tarifas = (
+                alt.Chart(selecionado[["fare", "sobreviveu"]])
+                .mark_boxplot(size=60)
+                .encode(
+                    x=alt.X("sobreviveu:N", title=None, axis=alt.Axis(labelAngle=0)),
+                    # escala symlog: `fare` é muito assimétrica e tem tarifas zero
+                    y=alt.Y("fare:Q", title="Tarifa (£, escala symlog)", scale=alt.Scale(type="symlog")),
+                    color=alt.Color("sobreviveu:N", scale=CORES_CLASSE, legend=None),
+                )
+                .properties(height=300)
+            )
+            st.altair_chart(tarifas, width="stretch", alt="Boxplot da tarifa paga por desfecho (sobreviveu ou não)")
